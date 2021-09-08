@@ -16,10 +16,16 @@ let links = [
 const resolvers = {
   Query: {
     info: () => `A news site for getting helpful links`,
+    // retrieve all links
     feed: () => links,
+    // retrieve a single link
+    link: (parent, args) => {
+      return links.find(link => link.id === `link-${args.id}`)
+    }
   },
 
   Mutation: {
+    // create a link
     post: (parent, args) => {
       
       linkIdCount++;
@@ -33,6 +39,39 @@ const resolvers = {
       links = [...links, link];
 
       return link;
+    },
+
+
+    updateLink: (parent, args) => {
+      let updatedLink = {};
+
+      const updatedLinks = links.map(link => {
+        if (link.id !== `link-${args.id}`) return link;
+
+        updatedLink = (
+          {
+            ...link,
+            url: args.url,
+            description: args.description
+          }
+        );
+
+        return updatedLink;
+      });
+
+      links = updatedLinks;
+
+      return updatedLink;
+    },
+
+
+    deleteLink: (parent, args) => {
+      const linkToDelete = links.find(link => link.id === `link-${args.id}`);
+      const updatedLinks = links.filter(link => link.id !== `link-${args.id}`);
+
+      links = updatedLinks;
+
+      return linkToDelete;
     }
   },
 
