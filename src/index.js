@@ -41,7 +41,7 @@ const resolvers = {
       return link;
     },
 
-
+    // update a link
     updateLink: (parent, args) => {
       let updatedLink = {};
 
@@ -64,7 +64,7 @@ const resolvers = {
       return updatedLink;
     },
 
-
+    // delete a link
     deleteLink: (parent, args) => {
       const linkToDelete = links.find(link => link.id === `link-${args.id}`);
       const updatedLinks = links.filter(link => link.id !== `link-${args.id}`);
