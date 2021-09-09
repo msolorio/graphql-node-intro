@@ -1,6 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const { ApolloServer } = require('apollo-server');
+import fs from 'fs';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { ApolloServer } from 'apollo-server';
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 let linkIdCount: number = 0;
 
