@@ -2,9 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const { ApolloServer } = require('apollo-server');
 
-let linkIdCount = 0;
+let linkIdCount: number = 0;
 
-let links = [
+type Link = {
+  id: string,
+  url: string,
+  description: string
+}
+
+let links: Link[] = [
   {
     id: 'link-0',
     url: 'www.howtographql.com',
@@ -15,18 +21,18 @@ let links = [
 
 const resolvers = {
   Query: {
-    info: () => `A news site for getting helpful links`,
+    info: (): string => `A news site for getting helpful links`,
     // retrieve all links
-    feed: () => links,
+    feed: (): Link[] => links,
     // retrieve a single link
-    link: (parent, args) => {
-      return links.find(link => link.id === `link-${args.id}`)
+    link: (parent: any, args: any): Link | undefined => {
+      return links.find((link: Link) => link.id === `link-${args.id}`)
     }
   },
 
   Mutation: {
     // create a link
-    post: (parent, args) => {
+    post: (parent: any, args: any): Link => {
       
       linkIdCount++;
 
@@ -42,10 +48,10 @@ const resolvers = {
     },
 
     // update a link
-    updateLink: (parent, args) => {
-      let updatedLink = {};
+    updateLink: (parent: any, args: any): Link => {
+      let updatedLink: Link = { id: '', url: '', description: '' };
 
-      const updatedLinks = links.map(link => {
+      const updatedLinks: Link[] = links.map((link: any) => {
         if (link.id !== `link-${args.id}`) return link;
 
         updatedLink = (
@@ -65,9 +71,9 @@ const resolvers = {
     },
 
     // delete a link
-    deleteLink: (parent, args) => {
-      const linkToDelete = links.find(link => link.id === `link-${args.id}`);
-      const updatedLinks = links.filter(link => link.id !== `link-${args.id}`);
+    deleteLink: (parent: any, args: any): Link | undefined => {
+      const linkToDelete: Link | undefined = links.find((link: Link) => link.id === `link-${args.id}`);
+      const updatedLinks: Link[] = links.filter((link: Link) => link.id !== `link-${args.id}`);
 
       links = updatedLinks;
 
@@ -77,9 +83,9 @@ const resolvers = {
 
   // Can be removed bc GraphQL infers the structure of a Link
   // Link: {
-  //   id: (parent) => parent.id,
-  //   description: (parent) => parent.description,
-  //   url: (parent) => parent.url
+  //   id: (parent: any) => parent.id,
+  //   description: (parent: any) => parent.description,
+  //   url: (parent: any) => parent.url
   // }
 }
 
@@ -95,6 +101,6 @@ const server = new ApolloServer({
 
 server
   .listen()
-  .then(({ url }) => {
-    console.log(`Server is running on ${url}`)
+  .then((result:any) => {
+    console.log(`Server is running on ${result.url}`)
   });

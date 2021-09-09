@@ -2,16 +2,19 @@
   "name": "express-graphql-how-to-graphql",
   "version": "1.0.0",
   "description": "",
-  "main": "node src/index.js",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "copy": "copyfiles --error --up 1 src/*.graphql dist && tsc"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "apollo-server": "^3.3.0",
-    "graphql": "^15.5.3"
+    "copyfiles": "^2.4.1",
+    "graphql": "^15.5.3",
+    "typescript": "^4.4.2"
   }
 }
