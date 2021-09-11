@@ -1,10 +1,18 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import fs from 'fs';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { ApolloServer } from 'apollo-server';
 import PrismaClientPkg from '@prisma/client';
-import { feed, link, info } from './resolvers/Query.js';
-import { post, updateLink, deleteLink } from './resolvers/Mutation.js';
+
+import { getUserId } from './utils.js';
+import Query from './resolvers/Query.js';
+import Mutation from './resolvers/Mutation.js';
+import User from './resolvers/User.js';
+import Link from './resolvers/Link.js';
+
 const { PrismaClient } = PrismaClientPkg;
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -18,24 +26,10 @@ type Link = {
 
 
 const resolvers = {
-  Query: {
-    info,
-    feed, // retrieve all links
-    link // retrieve a single link
-  },
-
-  Mutation: {
-    post, // create a link
-    updateLink, // update a link
-    deleteLink // delete a link
-  },
-
-  // Can be removed bc GraphQL infers the structure of a Link
-  // Link: {
-  //   id: (parent: any) => parent.id,
-  //   description: (parent: any) => parent.description,
-  //   url: (parent: any) => parent.url
-  // }
+  Query,
+  Mutation,
+  User,
+  Link
 }
 
 
@@ -45,8 +39,12 @@ const server = new ApolloServer({
     'utf8'
   ),
   resolvers,
-  context: {
-    prisma
+  context: ({ req }) => {
+    return {
+      ...req,
+      prisma,
+      userId: (req && req.headers.authorization && getUserId(req)) || null
+    }
   }
 });
 

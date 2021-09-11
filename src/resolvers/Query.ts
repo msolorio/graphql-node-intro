@@ -18,7 +18,7 @@ function link(parent: any, args: any, context: any): Link {
   });
 }
 
-export {
+export default {
   info,
   feed,
   link

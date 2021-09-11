@@ -9,4 +9,8 @@ function link(parent, args, context) {
         where: { id: Number(args.id) }
     });
 }
-export { info, feed, link };
+export default {
+    info: info,
+    feed: feed,
+    link: link
+};
