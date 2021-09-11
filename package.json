@@ -6,8 +6,8 @@
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/index.js",
-    "build": "copyfiles --error --up 1 src/*.graphql dist && tsc"
+    "dev": "nodemon dist/index.js",
+    "build": "copyfiles --error --up 1 src/*.graphql dist && tsc --watch"
   },
   "keywords": [],
   "author": "",
